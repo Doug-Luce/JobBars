@@ -46,6 +46,7 @@ namespace JobBars.Cooldowns.Manager {
         }
 
         private void ResetAddon( AddonPartyList* addon ) {
+            ClearTooltip();
             Root?.Dispose();
             Root = null;
         }
@@ -55,6 +56,7 @@ namespace JobBars.Cooldowns.Manager {
         }
 
         public void Hide() {
+            ClearTooltip();
             Root?.IsVisible = false;
         }
 
@@ -81,10 +83,23 @@ namespace JobBars.Cooldowns.Manager {
 
         // Drawn by us in ImGui, because the overlay addon these nodes live on is click-through
         // and never dispatches native mouse events to them.
-        public void DrawTooltip() {
-            if( Root == null || !Root.IsVisible ) return;
+        private CooldownNode? TooltipNode;
 
-            var scale = JobBars.Configuration.CooldownScale;
+        // Hit-tested by us and shown via the node's own ShowTooltip, which gives the real
+        // in-game action tooltip without needing the addon to dispatch a MouseOver.
+        public void DrawTooltip() {
+            var hovered = FindHovered();
+            if( hovered == TooltipNode ) return;
+
+            TooltipNode?.HideTooltip();
+            TooltipNode = hovered;
+            TooltipNode?.ShowTooltip();
+        }
+
+        private CooldownNode? FindHovered() {
+            if( Root == null || !Root.IsVisible ) return null;
+
+            var scale = JobBars.Configuration.CooldownScale * UiHelper.GetAddonScale( "_PartyList" );
             var width = CooldownNode.WIDTH * scale;
             var height = CooldownNode.HEIGHT * scale;
 
@@ -92,12 +107,16 @@ namespace JobBars.Cooldowns.Manager {
                 if( !row.IsVisible ) continue;
                 foreach( var node in row.Nodes ) {
                     if( !node.IsVisible || node.IconId == 0 ) continue;
-                    if( !UiHelper.MouseOver( node.ScreenPosition, width, height ) ) continue;
-
-                    ImGui.SetTooltip( UiHelper.GetActionName( node.IconId ) );
-                    return;
+                    if( UiHelper.MouseOver( node.ScreenPosition, width, height ) ) return node;
                 }
             }
+
+            return null;
+        }
+
+        private void ClearTooltip() {
+            TooltipNode?.HideTooltip();
+            TooltipNode = null;
         }
 
         public void Tick() {

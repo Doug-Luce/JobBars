@@ -45,6 +45,7 @@ namespace JobBars.Buffs.Manager {
         }
 
         public void Hide() {
+            ClearTooltip();
             Root?.IsVisible = false;
         }
 
@@ -59,6 +60,8 @@ namespace JobBars.Buffs.Manager {
         }
 
         public void Dispose() {
+            ClearTooltip();
+
             PartyListController?.Dispose();
             PartyListController = null;
             Highlight = null;
@@ -87,20 +90,37 @@ namespace JobBars.Buffs.Manager {
 
         // See CooldownManager.DrawTooltip - the overlay addon is click-through, so native
         // MouseOver never reaches these nodes.
-        public void DrawTooltip() {
-            if( Root == null || !Root.IsVisible ) return;
+        private BuffNode? TooltipNode;
 
-            var scale = JobBars.Configuration.BuffScale;
+        // Same approach as CooldownManager - the buff bar sits on a KamiToolKit overlay addon,
+        // which is click-through, so we hit-test ourselves and invoke the tooltip directly.
+        public void DrawTooltip() {
+            var hovered = FindHovered();
+            if( hovered == TooltipNode ) return;
+
+            TooltipNode?.HideTooltip();
+            TooltipNode = hovered;
+            TooltipNode?.ShowTooltip();
+        }
+
+        private BuffNode? FindHovered() {
+            if( Root == null || !Root.IsVisible ) return null;
+
+            var scale = JobBars.Configuration.BuffScale * UiHelper.GetAddonScale( "KTK_Overlay_Middle" );
             var width = BuffNode.WIDTH * scale;
             var height = BuffNode.HEIGHT * scale;
 
             foreach( var node in Root.Buffs ) {
                 if( !node.IsVisible || node.IconId == 0 ) continue;
-                if( !UiHelper.MouseOver( node.ScreenPosition, width, height ) ) continue;
-
-                ImGui.SetTooltip( UiHelper.GetActionName( node.IconId ) );
-                return;
+                if( UiHelper.MouseOver( node.ScreenPosition, width, height ) ) return node;
             }
+
+            return null;
+        }
+
+        private void ClearTooltip() {
+            TooltipNode?.HideTooltip();
+            TooltipNode = null;
         }
 
         public void Tick() {

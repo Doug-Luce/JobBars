@@ -100,6 +100,10 @@ namespace JobBars.Nodes.Buff {
             if( action == LastAction ) return;
             LastAction = action;
             Icon.LoadIcon( UiHelper.GetIcon( action ) );
+
+            // Contents only - we trigger the tooltip ourselves from our own hit-test, because
+            // these nodes never receive native mouse events.
+            ActionTooltip = ( uint )action;
         }
 
 

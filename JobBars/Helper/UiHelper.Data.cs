@@ -75,6 +75,13 @@ namespace JobBars.Helper {
         // Hit-test in ImGui screen space. The bars live on KamiToolKit overlay addons, which are
         // created click-through (IsOverlayAddon sets Flags1A3 0x40 and disables focus), so no node
         // inside them can ever receive a native MouseOver - the tooltip has to be drawn by us.
+        // The node tree is scaled by its host addon (global UI scale plus any per-element HUD
+        // scaling), so a hover rect built from local node sizes has to include it.
+        public static unsafe float GetAddonScale( string name ) {
+            var addon = GetAddon( name );
+            return addon == null ? 1f : addon->Scale;
+        }
+
         public static bool MouseOver( Vector2 screenPos, float width, float height ) {
             var m = ImGui.GetMousePos();
             return m.X >= screenPos.X && m.X <= screenPos.X + width &&
