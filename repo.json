@@ -1,10 +1,10 @@
 [
   {
     "Author": "ocealot",
-    "Name": "JobBars",
-    "InternalName": "JobBars",
-    "AssemblyVersion": "1.3.3.3",
-    "Description": "Additional job gauges, party buff timers, mitigation trackers, and more. Icon by PAPACHIN\n\nFork of 0ceal0t/JobBars: hovering an icon on the Buffs or Cooldowns bar now shows the game's own action tooltip. Toggle per bar in /jobbars.",
+    "Name": "AureliusJobBars",
+    "InternalName": "AureliusJobBars",
+    "AssemblyVersion": "1.3.3.4",
+    "Description": "Additional job gauges, party buff timers, mitigation trackers, and more. Icon by PAPACHIN\n\nFork of 0ceal0t/JobBars: hovering an icon on the Buffs or Cooldowns bar shows the game's own action tooltip. Toggle per bar in /jobbars. Ships under its own InternalName because Dalamud blocks custom repos from serving names the official repo lists.",
     "ApplicableVersion": "any",
     "RepoUrl": "https://github.com/Doug-Luce/JobBars",
     "Tags": [
@@ -16,14 +16,14 @@
     "LoadSync": false,
     "CanUnloadAsync": false,
     "LoadPriority": 0,
-    "Punchline": "Extra job gauges (fork: native action tooltips on hover)",
+    "Punchline": "Extra job gauges, with native action tooltips on hover",
     "AcceptsFeedback": false,
-    "Changelog": "Adds native action tooltips when hovering Buffs / Cooldowns icons, via KamiToolKit's NodeBase.ActionTooltip. Toggle per bar in /jobbars (default on). Registering a tooltip adds NodeFlags.HasCollision, so the icons capture the mouse.",
-    "DownloadLinkInstall": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.3/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.3/latest.zip",
-    "DownloadLinkTesting": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.3/latest.zip",
+    "Changelog": "Native action tooltips on the Buffs and Cooldowns bars via KamiToolKit NodeBase.ActionTooltip. Toggle per bar in /jobbars (default on). Tooltips add NodeFlags.HasCollision, so the icons capture the mouse.",
+    "DownloadLinkInstall": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.4/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.4/latest.zip",
+    "DownloadLinkTesting": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.4/latest.zip",
     "IsTestingExclusive": false,
-    "LastUpdate": 1790531500,
+    "LastUpdate": 1790533803,
     "DownloadCount": 0
   }
 ]
