@@ -3,8 +3,8 @@
     "Author": "ocealot",
     "Name": "AureliusJobBars",
     "InternalName": "AureliusJobBars",
-    "AssemblyVersion": "1.3.3.5",
-    "Description": "Additional job gauges, party buff timers, mitigation trackers, and more. Icon by PAPACHIN\n\nFork of 0ceal0t/JobBars: native action tooltips when hovering Buffs/Cooldowns icons, and cooldowns hidden until the party member's level unlocks them. Toggles in /jobbars.",
+    "AssemblyVersion": "1.3.3.6",
+    "Description": "Additional job gauges, party buff timers, mitigation trackers, and more. Icon by PAPACHIN\n\nFork of 0ceal0t/JobBars: hover tooltips on the Buffs/Cooldowns icons (drawn in ImGui, since the overlay addon is click-through), and cooldowns hidden until the party member's level unlocks them.",
     "ApplicableVersion": "any",
     "RepoUrl": "https://github.com/Doug-Luce/JobBars",
     "Tags": [
@@ -18,12 +18,12 @@
     "LoadPriority": 0,
     "Punchline": "Extra job gauges, with native action tooltips on hover",
     "AcceptsFeedback": false,
-    "Changelog": "Tooltips now fire - they had to be set on the component's CollisionNode, since SimpleOverlayNode zeroes its flags and NodeBase skips ComponentNodes when applying HasCollision. Also hides cooldowns above the party member's level (Action.ClassJobLevel). Both toggleable in /jobbars.",
-    "DownloadLinkInstall": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.5/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.5/latest.zip",
-    "DownloadLinkTesting": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.5/latest.zip",
+    "Changelog": "Tooltips are now drawn in ImGui - KamiToolKit's overlay addons are click-through by design, so native MouseOver never reaches these nodes. Bars stay click-through. Plus level-gated cooldowns.",
+    "DownloadLinkInstall": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.6/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.6/latest.zip",
+    "DownloadLinkTesting": "https://github.com/Doug-Luce/JobBars/releases/download/v1.3.3.6/latest.zip",
     "IsTestingExclusive": false,
-    "LastUpdate": 1790551733,
+    "LastUpdate": 1790552327,
     "DownloadCount": 0
   }
 ]
