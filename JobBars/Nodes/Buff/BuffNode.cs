@@ -100,6 +100,7 @@ namespace JobBars.Nodes.Buff {
             if( action == LastAction ) return;
             LastAction = action;
             Icon.LoadIcon( UiHelper.GetIcon( action ) );
+            ActionTooltip = JobBars.Configuration.BuffShowTooltips ? ( uint )action : 0;
         }
 
         public void SetText( string text ) {

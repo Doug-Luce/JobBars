@@ -94,6 +94,7 @@ namespace JobBars.Data {
         public bool BuffThinBorder = false;
         public bool BuffSquare = false;
         public float BuffOnCDOpacity = 1.0f;
+        public bool BuffShowTooltips = true;
 
         public BoolValueConfig BuffEnabled = new( true );
         public BoolValueConfig BuffPartyListHighlight = new( true );
@@ -115,6 +116,7 @@ namespace JobBars.Data {
         public bool CooldownsHideActiveBuffDuration = false;
         public bool CooldownsShowPartyMembers = true;
         public float CooldownsOnCDOpacity = 1.0f;
+        public bool CooldownsShowTooltips = true;
 
         public bool CooldownsStateShowDefault = true;
         public bool CooldownsStateShowRunning = true;

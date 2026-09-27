@@ -70,6 +70,12 @@ namespace JobBars.Buffs.Manager {
                 JobBars.Configuration.Save();
             }
 
+            if( ImGui.Checkbox( "Show action tooltip on hover", ref JobBars.Configuration.BuffShowTooltips ) ) {
+                JobBars.Configuration.Save();
+                ResetUi();
+            }
+            if( ImGui.IsItemHovered() ) ImGui.SetTooltip( "Hovering a buff shows the game's own action tooltip.\nThis makes the buff icons capture the mouse, so you cannot click through them." );
+
             ImGui.SetNextItemWidth( 50f );
             if( ImGui.InputFloat( "Opacity when on cooldown" + Id, ref JobBars.Configuration.BuffOnCDOpacity ) ) JobBars.Configuration.Save();
 
