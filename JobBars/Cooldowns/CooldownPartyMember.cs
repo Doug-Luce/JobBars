@@ -1,4 +1,5 @@
 using JobBars.Data;
+using JobBars.Helper;
 using JobBars.Nodes.Cooldown;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,12 @@ namespace JobBars.Cooldowns {
                 tracker.Tick( partyMember.BuffDict );
 
                 if( trackerIdx >= ( CooldownRow.MAX_ITEMS - 1 ) ) break;
+
+                // skip cooldowns this job has not unlocked yet - no trackerIdx bump, so the
+                // remaining icons close the gap instead of leaving a hole
+                if( JobBars.Configuration.CooldownsHideUnlearned && partyMember.Level > 0 &&
+                    partyMember.Level < UiHelper.GetActionLevel( tracker.Icon ) ) continue;
+
                 // skip if disabled
                 if( !JobBars.Configuration.CooldownsStateShowDefault && tracker.CurrentState == TrackerState.None ||
                     !JobBars.Configuration.CooldownsStateShowRunning && tracker.CurrentState == TrackerState.Running ||

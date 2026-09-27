@@ -117,6 +117,7 @@ namespace JobBars.Data {
         public bool CooldownsShowPartyMembers = true;
         public float CooldownsOnCDOpacity = 1.0f;
         public bool CooldownsShowTooltips = true;
+        public bool CooldownsHideUnlearned = true;
 
         public bool CooldownsStateShowDefault = true;
         public bool CooldownsStateShowRunning = true;

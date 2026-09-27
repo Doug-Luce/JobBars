@@ -4,7 +4,7 @@
     "Punchline": "Extra job gauges, with native action tooltips on hover",
     "Description": "Additional job gauges, party buff timers, mitigation trackers, and more. Icon by PAPACHIN",
     "InternalName": "AureliusJobBars",
-    "AssemblyVersion": "1.3.3.4",
+    "AssemblyVersion": "1.3.3.5",
     "Tags": [
         "UI",
         "Bars"

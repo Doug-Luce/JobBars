@@ -55,12 +55,17 @@ namespace JobBars.Helper {
 
         private static readonly HashSet<uint> GCDs = [];
         private static readonly Dictionary<uint, uint> ActionToIcon = [];
+        private static readonly Dictionary<uint, byte> ActionToLevel = [];
 
         public static List<ItemData> StatusList { get; private set; } = [];
         public static List<ItemData> ActionList { get; private set; } = [];
 
         public static bool IsGcd( ActionIds action ) => IsGcd( ( uint )action );
         public static bool IsGcd( uint action ) => GCDs.Contains( action );
+
+        // Level the action unlocks at, or 0 when unknown - used to hide cooldowns a party
+        // member has not learned yet.
+        public static byte GetActionLevel( ActionIds action ) => ActionToLevel.GetValueOrDefault( ( uint )action, ( byte )0 );
 
         public static uint GetIcon( ActionIds action ) => GetIcon( ( uint )action );
         public static uint GetIcon( uint action ) => ActionToIcon[action];
@@ -130,6 +135,7 @@ namespace JobBars.Helper {
             ItemToString = [];
             ActionList.Clear();
             StatusList.Clear();
+            ActionToLevel.Clear();
 
             ActionSheet = Dalamud.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Action>().Where(
                 x => !string.IsNullOrEmpty( x.Name.ExtractText() ) && ( x.IsPlayerAction || x.ClassJob.ValueNullable != null ) && !x.IsPvP // weird conditions to catch things like enchanted RDM spells
@@ -139,6 +145,7 @@ namespace JobBars.Helper {
                 var attackType = item.ActionCategory.Value.Name.ToString();
                 var actionId = item.ActionCategory.Value.RowId;
                 if( item.Icon != 405 && item.Icon != 0 ) ActionToIcon[item.RowId] = item.Icon;
+                ActionToLevel[item.RowId] = item.ClassJobLevel;
 
                 if( actionId == 2 || actionId == 3 ) { // spell or weaponskill
                     if( item.CooldownGroup == 58 || item.AdditionalCooldownGroup == 58 ) GCDs.Add( item.RowId ); // not actually a gcd
