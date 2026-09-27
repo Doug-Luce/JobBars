@@ -68,6 +68,12 @@ namespace JobBars.Cooldowns.Manager {
 
             ImGui.SetNextItemWidth( 50f );
             if( ImGui.InputFloat( "Opacity when on cooldown" + Id, ref JobBars.Configuration.CooldownsOnCDOpacity ) ) JobBars.Configuration.Save();
+
+            if( ImGui.Checkbox( "Show action tooltip on hover" + Id, ref JobBars.Configuration.CooldownsShowTooltips ) ) {
+                JobBars.Configuration.Save();
+                ResetUi();
+            }
+            if( ImGui.IsItemHovered() ) ImGui.SetTooltip( "Hovering a cooldown shows the game's own action tooltip.\nThis makes the cooldown icons capture the mouse, so you cannot click through them." );
         }
 
         protected override void DrawItem( CooldownConfig[] item, JobIds job ) {

@@ -99,6 +99,7 @@ namespace JobBars.Nodes.Cooldown {
             if( action == LastAction ) return;
             LastAction = action;
             Icon.LoadIcon( UiHelper.GetIcon( action ) );
+            ActionTooltip = JobBars.Configuration.CooldownsShowTooltips ? ( uint )action : 0;
         }
     }
 }
