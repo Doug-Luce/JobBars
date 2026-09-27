@@ -69,6 +69,9 @@ namespace JobBars.Cooldowns.Manager {
             ImGui.SetNextItemWidth( 50f );
             if( ImGui.InputFloat( "Opacity when on cooldown" + Id, ref JobBars.Configuration.CooldownsOnCDOpacity ) ) JobBars.Configuration.Save();
 
+            if( ImGui.Checkbox( "Hide cooldowns not yet unlocked" + Id, ref JobBars.Configuration.CooldownsHideUnlearned ) ) JobBars.Configuration.Save();
+            if( ImGui.IsItemHovered() ) ImGui.SetTooltip( "Hides actions whose unlock level is above the party member's current level." );
+
             if( ImGui.Checkbox( "Show action tooltip on hover" + Id, ref JobBars.Configuration.CooldownsShowTooltips ) ) {
                 JobBars.Configuration.Save();
                 ResetUi();

@@ -13,6 +13,7 @@ namespace JobBars {
         public uint MaxHP;
         public Dictionary<Item, Status> BuffDict;
         public bool IsPlayer;
+        public byte Level;
     }
 
     public unsafe partial class JobBars {
@@ -54,6 +55,7 @@ namespace JobBars {
                     CurrentHP = localPlayer.CurrentHp,
                     MaxHP = localPlayer.MaxHp,
                     Job = UiHelper.IdToJob( localPlayer.ClassJob.RowId ),
+                    Level = localPlayer.Level,
                     BuffDict = []
                 };
 
@@ -75,6 +77,7 @@ namespace JobBars {
                     CurrentHP = info.CurrentHP,
                     MaxHP = info.MaxHP,
                     Job = UiHelper.IdToJob( info.ClassJob ),
+                    Level = info.Level,
                     BuffDict = []
                 };
 

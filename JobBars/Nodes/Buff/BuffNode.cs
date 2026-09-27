@@ -100,8 +100,22 @@ namespace JobBars.Nodes.Buff {
             if( action == LastAction ) return;
             LastAction = action;
             Icon.LoadIcon( UiHelper.GetIcon( action ) );
-            ActionTooltip = JobBars.Configuration.BuffShowTooltips ? ( uint )action : 0;
+            SetTooltip( action );
         }
+
+        // SimpleOverlayNode's constructor zeroes the component's collision node, and
+        // NodeBase's tooltip plumbing skips ComponentNodes when it flips HasCollision - so
+        // the tooltip has to go on the collision node directly, the same way
+        // SimpleComponentNode forwards TextTooltip to it.
+        private void SetTooltip( ActionIds action ) {
+            var enabled = JobBars.Configuration.BuffShowTooltips;
+            CollisionNode.NodeFlags = enabled
+                ? NodeFlags.Visible | NodeFlags.Enabled | NodeFlags.HasCollision |
+                  NodeFlags.RespondToMouse | NodeFlags.Focusable | NodeFlags.EmitsEvents | NodeFlags.Fill
+                : 0;
+            CollisionNode.ActionTooltip = enabled ? ( uint )action : 0;
+        }
+
 
         public void SetText( string text ) {
             if( text == null ) return;
