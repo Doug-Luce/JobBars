@@ -1,3 +1,5 @@
+using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Enums;
@@ -56,6 +58,7 @@ namespace JobBars.Helper {
         private static readonly HashSet<uint> GCDs = [];
         private static readonly Dictionary<uint, uint> ActionToIcon = [];
         private static readonly Dictionary<uint, byte> ActionToLevel = [];
+        private static readonly Dictionary<uint, string> ActionToName = [];
 
         public static List<ItemData> StatusList { get; private set; } = [];
         public static List<ItemData> ActionList { get; private set; } = [];
@@ -66,6 +69,17 @@ namespace JobBars.Helper {
         // Level the action unlocks at, or 0 when unknown - used to hide cooldowns a party
         // member has not learned yet.
         public static byte GetActionLevel( ActionIds action ) => ActionToLevel.GetValueOrDefault( ( uint )action, ( byte )0 );
+
+        public static string GetActionName( ActionIds action ) => ActionToName.GetValueOrDefault( ( uint )action, "Unknown" );
+
+        // Hit-test in ImGui screen space. The bars live on KamiToolKit overlay addons, which are
+        // created click-through (IsOverlayAddon sets Flags1A3 0x40 and disables focus), so no node
+        // inside them can ever receive a native MouseOver - the tooltip has to be drawn by us.
+        public static bool MouseOver( Vector2 screenPos, float width, float height ) {
+            var m = ImGui.GetMousePos();
+            return m.X >= screenPos.X && m.X <= screenPos.X + width &&
+                   m.Y >= screenPos.Y && m.Y <= screenPos.Y + height;
+        }
 
         public static uint GetIcon( ActionIds action ) => GetIcon( ( uint )action );
         public static uint GetIcon( uint action ) => ActionToIcon[action];
@@ -136,6 +150,7 @@ namespace JobBars.Helper {
             ActionList.Clear();
             StatusList.Clear();
             ActionToLevel.Clear();
+            ActionToName.Clear();
 
             ActionSheet = Dalamud.DataManager.GetExcelSheet<Lumina.Excel.Sheets.Action>().Where(
                 x => !string.IsNullOrEmpty( x.Name.ExtractText() ) && ( x.IsPlayerAction || x.ClassJob.ValueNullable != null ) && !x.IsPvP // weird conditions to catch things like enchanted RDM spells
@@ -146,6 +161,7 @@ namespace JobBars.Helper {
                 var actionId = item.ActionCategory.Value.RowId;
                 if( item.Icon != 405 && item.Icon != 0 ) ActionToIcon[item.RowId] = item.Icon;
                 ActionToLevel[item.RowId] = item.ClassJobLevel;
+                ActionToName[item.RowId] = item.Name.ExtractText();
 
                 if( actionId == 2 || actionId == 3 ) { // spell or weaponskill
                     if( item.CooldownGroup == 58 || item.AdditionalCooldownGroup == 58 ) GCDs.Add( item.RowId ); // not actually a gcd

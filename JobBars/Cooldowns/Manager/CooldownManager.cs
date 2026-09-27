@@ -1,3 +1,4 @@
+using Dalamud.Bindings.ImGui;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using JobBars.Data;
@@ -75,6 +76,27 @@ namespace JobBars.Cooldowns.Manager {
 
             foreach( var member in ObjectIdToMember.Values ) {
                 member.ProcessAction( action, objectId );
+            }
+        }
+
+        // Drawn by us in ImGui, because the overlay addon these nodes live on is click-through
+        // and never dispatches native mouse events to them.
+        public void DrawTooltip() {
+            if( Root == null || !Root.IsVisible ) return;
+
+            var scale = JobBars.Configuration.CooldownScale;
+            var width = CooldownNode.WIDTH * scale;
+            var height = CooldownNode.HEIGHT * scale;
+
+            foreach( var row in Root.Rows ) {
+                if( !row.IsVisible ) continue;
+                foreach( var node in row.Nodes ) {
+                    if( !node.IsVisible || node.IconId == 0 ) continue;
+                    if( !UiHelper.MouseOver( node.ScreenPosition, width, height ) ) continue;
+
+                    ImGui.SetTooltip( UiHelper.GetActionName( node.IconId ) );
+                    return;
+                }
             }
         }
 

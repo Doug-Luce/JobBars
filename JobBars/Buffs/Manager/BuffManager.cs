@@ -1,3 +1,4 @@
+using Dalamud.Bindings.ImGui;
 using FFXIVClientStructs.FFXIV.Component.GUI;
 using JobBars.Data;
 using JobBars.Helper;
@@ -82,6 +83,24 @@ namespace JobBars.Buffs.Manager {
             if( !JobBars.Configuration.BuffIncludeParty && objectId != Dalamud.Objects.LocalPlayer?.GameObjectId ) return;
 
             foreach( var member in ObjectIdToMember.Values ) member.ProcessAction( action, objectId );
+        }
+
+        // See CooldownManager.DrawTooltip - the overlay addon is click-through, so native
+        // MouseOver never reaches these nodes.
+        public void DrawTooltip() {
+            if( Root == null || !Root.IsVisible ) return;
+
+            var scale = JobBars.Configuration.BuffScale;
+            var width = BuffNode.WIDTH * scale;
+            var height = BuffNode.HEIGHT * scale;
+
+            foreach( var node in Root.Buffs ) {
+                if( !node.IsVisible || node.IconId == 0 ) continue;
+                if( !UiHelper.MouseOver( node.ScreenPosition, width, height ) ) continue;
+
+                ImGui.SetTooltip( UiHelper.GetActionName( node.IconId ) );
+                return;
+            }
         }
 
         public void Tick() {

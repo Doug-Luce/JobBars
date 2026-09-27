@@ -10,6 +10,9 @@ namespace JobBars {
         public static readonly Vector4 GREEN_COLOR = new( 0.36078431373f, 0.72156862745f, 0.36078431373f, 1.0f );
 
         private void BuildSettingsUi() {
+            if( Configuration.CooldownsShowTooltips ) CooldownManager?.DrawTooltip();
+            if( Configuration.BuffShowTooltips ) BuffManager?.DrawTooltip();
+
             if( !Visible ) return;
 
             var _ID = "##JobBars_Settings";
